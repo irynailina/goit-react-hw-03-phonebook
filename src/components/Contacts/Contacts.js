@@ -16,8 +16,9 @@ class Contacts extends Component {
   };
 
   componentDidMount() {
+    const {contacts} = this.state
     this.setState({
-      contacts: JSON.parse(localStorage.getItem("contacts")) || [],
+      contacts: JSON.parse(localStorage.getItem("contacts")) || contacts,
     });
   }
 
@@ -60,8 +61,18 @@ class Contacts extends Component {
     });
   };
 
+  // filterContacts = (e) => {
+  //   const {filter} = this.state
+  //   const filteredContact = JSON.parse(localStorage.getItem('contacts')).filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
+  //   this.setState({
+  //     filter: e.target.value,
+  //     contacts: filteredContact
+  //   })
+  // }
+
   render() {
-    const { filter } = this.state;
+    const { filter, contacts } = this.state;
+    console.log(contacts);
     const filteredContacts = JSON.parse(
       localStorage.getItem("contacts")
     ).filter((contact) =>
