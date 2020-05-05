@@ -3,7 +3,9 @@ import ContactsItem from "../ContactsItem/ContactsItem";
 import styles from "./contactsList.module.css";
 import PropTypes from "prop-types";
 
-export default function ContactsList({ contacts, deleteContact }) {
+
+export default function ContactsList({ contacts=[], deleteContact }) {
+  
   return (
     <div className={styles.contactsWrap}>
       <table className={styles.list}>

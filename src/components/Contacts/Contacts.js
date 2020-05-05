@@ -16,17 +16,16 @@ class Contacts extends Component {
   };
 
   componentDidMount() {
-    const {contacts} = this.state
     this.setState({
-      contacts: JSON.parse(localStorage.getItem("contacts")) && contacts,
+      contacts: this.filterContacts(),
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+  // //   if (prevState.contacts !== this.state.contacts) {
+  // //   }
+  //  }
 
   getContact = (newContact) => {
     const { name } = newContact;
@@ -61,24 +60,26 @@ class Contacts extends Component {
     });
   };
 
-  // filterContacts = (e) => {
-  //   const {filter} = this.state
-  //   const filteredContact = JSON.parse(localStorage.getItem('contacts')).filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
-  //   this.setState({
-  //     filter: e.target.value,
-  //     contacts: filteredContact
-  //   })
-  // }
+  filterContacts = () => {
+    const { filter, contacts } = this.state;
+
+    const localStorageContacts = localStorage.getItem("contacts")
+      ? JSON.parse(localStorage.getItem("contacts")).filter((contact) =>
+          contact.name.toLowerCase().includes(filter.toLowerCase())
+        )
+      : [];
+    const set = new Set([...localStorageContacts]);
+    const set3 = new Set([...contacts]);
+    const set2 = [
+      ...new Set([...set]),
+      ...new Set([...set3]),
+    ].filter((contact) => set.has(contact));
+    return [...set2];
+  };
 
   render() {
-    const { filter, contacts } = this.state;
-    
-    console.log(contacts);
-    const filteredContacts = JSON.parse(
-      localStorage.getItem("contacts")
-    ).filter((contact) =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
+    const { filter } = this.state;
+
     return (
       <>
         <div className={styles.container}>
@@ -91,7 +92,7 @@ class Contacts extends Component {
           <h2 className={styles.contacts}>Contacts</h2>
           <Filter value={filter} onChangeFilter={this.handleChangeFilter} />
           <ContactsList
-            contacts={filteredContacts}
+            contacts={this.filterContacts()}
             deleteContact={this.deleteContact}
           />
         </div>
