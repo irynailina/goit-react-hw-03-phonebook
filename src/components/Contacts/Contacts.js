@@ -18,7 +18,7 @@ class Contacts extends Component {
   componentDidMount() {
     const {contacts} = this.state
     this.setState({
-      contacts: JSON.parse(localStorage.getItem("contacts")) || contacts,
+      contacts: JSON.parse(localStorage.getItem("contacts")) && contacts,
     });
   }
 
@@ -72,6 +72,7 @@ class Contacts extends Component {
 
   render() {
     const { filter, contacts } = this.state;
+    
     console.log(contacts);
     const filteredContacts = JSON.parse(
       localStorage.getItem("contacts")
